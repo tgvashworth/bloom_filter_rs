@@ -2,14 +2,16 @@ use std::ops::Rem;
 
 #[derive(Debug)]
 pub struct Bits {
-    arr: Vec<u32>
+    arr: Vec<u32>,
+    size: usize
 }
 
 impl Bits {
     pub fn new(size: usize) -> Bits {
         let len = size / 32 + 1;
         Bits {
-            arr: vec![0; len]
+            arr: vec![0; len],
+            size: size
         }
     }
 
@@ -29,6 +31,9 @@ impl Bits {
     }
 
     fn loc(&self, i: usize) -> (usize, usize) {
+        if (i >= self.size) {
+            panic!("Bit index must be less than {}", i);
+        }
         let index = i / 32;
         let shift = i.rem(32);
         (index, shift)
@@ -86,5 +91,23 @@ mod tests {
         assert_eq!(b.get(0), true);
         b.unset(0);
         assert_eq!(b.get(0), false);
+    }
+
+    #[test]
+    fn large_size() {
+        let mut b = Bits::new(128);
+        b.set(0);
+        b.set(8);
+        b.set(127);
+        assert_eq!(b.get(0), true);
+        assert_eq!(b.get(8), true);
+        assert_eq!(b.get(127), true);
+    }
+
+    #[test]
+    #[should_panic(expected = "Bit index must be less than 1")]
+    fn out_of_bounds() {
+        let mut b = Bits::new(1);
+        b.set(1);
     }
 }
