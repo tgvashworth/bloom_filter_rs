@@ -2,16 +2,24 @@ use std::ops::Rem;
 
 #[derive(Debug)]
 pub struct Bits {
-    arr: Vec<u32>,
+    arr: Vec<u8>,
     size: usize
 }
 
 impl Bits {
     pub fn new(size: usize) -> Bits {
-        let len = size / 32 + 1;
+        let len = Bits::len_for_size(size);
         Bits {
             arr: vec![0; len],
             size: size
+        }
+    }
+
+    fn len_for_size(size: usize) -> usize {
+        let rem = size.rem(8);
+        match rem {
+            0 => size / 8,
+            _ => size / 8 + 1
         }
     }
 
@@ -34,8 +42,8 @@ impl Bits {
         if (i >= self.size) {
             panic!("Bit index must be less than {}", i);
         }
-        let index = i / 32;
-        let shift = i.rem(32);
+        let index = i / 8;
+        let shift = i.rem(8);
         (index, shift)
     }
 }
@@ -53,6 +61,12 @@ mod tests {
     fn set() {
         let mut b = Bits::new(10);
         b.set(0)
+    }
+
+    #[test]
+    fn check_len() {
+        let b = Bits::new(16);
+        assert_eq!(b.arr.len(), 2);
     }
 
     #[test]
