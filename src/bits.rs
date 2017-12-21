@@ -43,7 +43,7 @@ impl Bits {
     }
 
     fn loc(&self, i: usize) -> (usize, usize) {
-        if (i >= self.size) {
+        if i >= self.size {
             panic!("Bit index must be less than {}", i);
         }
         let index = i / 8;
@@ -143,7 +143,7 @@ mod tests {
 
     #[test]
     fn index_get() {
-        let mut b = Bits::new(1);
+        let b = Bits::new(1);
         assert_eq!(b[0], false);
     }
 
