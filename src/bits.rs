@@ -1,10 +1,14 @@
 use std::ops::Rem;
+use std::ops::Index;
 
 #[derive(Debug)]
 pub struct Bits {
     arr: Vec<u8>,
     size: usize
 }
+
+static TRUE: bool = true;
+static FALSE: bool = false;
 
 impl Bits {
     pub fn new(size: usize) -> Bits {
@@ -45,6 +49,18 @@ impl Bits {
         let index = i / 8;
         let shift = i.rem(8);
         (index, shift)
+    }
+}
+
+impl Index<usize> for Bits {
+    type Output = bool;
+
+    fn index(&self, i: usize) -> &bool {
+        if self.get(i) {
+            &TRUE
+        } else {
+            &FALSE
+        }
     }
 }
 
@@ -123,5 +139,18 @@ mod tests {
     fn out_of_bounds() {
         let mut b = Bits::new(1);
         b.set(1);
+    }
+
+    #[test]
+    fn index_get() {
+        let mut b = Bits::new(1);
+        assert_eq!(b[0], false);
+    }
+
+    #[test]
+    fn index_get_set() {
+        let mut b = Bits::new(1);
+        b.set(0);
+        assert_eq!(b[0], true);
     }
 }
