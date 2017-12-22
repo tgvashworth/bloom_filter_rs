@@ -19,6 +19,10 @@ impl Bits {
         }
     }
 
+    pub fn size(&self) -> usize {
+        self.size
+    }
+
     fn len_for_size(size: usize) -> usize {
         let rem = size.rem(8);
         match rem {
