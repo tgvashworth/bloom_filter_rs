@@ -148,6 +148,21 @@ mod tests {
     }
 
     #[test]
+    fn full() {
+        let mut b = Bits::new(128);
+        for i in 0..128 {
+            b.set(i)
+        }
+        for i in 0..128 {
+            assert!(b.get(i))
+        }
+        assert_eq!(
+            b.arr,
+            vec![255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
+        );
+    }
+
+    #[test]
     #[should_panic(expected = "Bit index must be less than 1")]
     fn out_of_bounds() {
         let mut b = Bits::new(1);
