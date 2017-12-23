@@ -167,13 +167,41 @@ mod tests {
                 Bits::new(size).size == size
             }
 
-            fn set_unset(size: usize, i: usize) -> TestResult {
+            fn set_get(size: usize, i: usize) -> TestResult {
                 if i >= size {
                     TestResult::discard()
                 } else {
                     let mut b = Bits::new(size);
                     b.set(i);
                     TestResult::from_bool(b.get(i))
+                }
+            }
+
+            fn set_index_get(size: usize, i: usize) -> TestResult {
+                if i >= size {
+                    TestResult::discard()
+                } else {
+                    let mut b = Bits::new(size);
+                    b.set(i);
+                    TestResult::from_bool(b[i])
+                }
+            }
+
+            fn get_not_set(size: usize, i: usize) -> TestResult {
+                if i >= size {
+                    TestResult::discard()
+                } else {
+                    let b = Bits::new(size);
+                    TestResult::from_bool(!b.get(i))
+                }
+            }
+
+            fn index_get_not_set(size: usize, i: usize) -> TestResult {
+                if i >= size {
+                    TestResult::discard()
+                } else {
+                    let b = Bits::new(size);
+                    TestResult::from_bool(!b[i])
                 }
             }
         }
