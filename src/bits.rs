@@ -24,6 +24,9 @@ impl Bits {
     }
 
     fn len_for_size(size: usize) -> usize {
+        if size >= u16::max_value() as usize {
+            panic!("Bits size cannot exceed {}", u16::max_value())
+        }
         let rem = size.rem(8);
         match rem {
             0 => size / 8,
@@ -136,6 +139,12 @@ mod tests {
         assert_eq!(b.get(0), true);
         assert_eq!(b.get(8), true);
         assert_eq!(b.get(127), true);
+    }
+
+    #[test]
+    #[should_panic(expected = "Bits size cannot exceed 65535")]
+    fn max_size() {
+        Bits::new(usize::max_value());
     }
 
     #[test]
