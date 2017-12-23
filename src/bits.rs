@@ -157,4 +157,25 @@ mod tests {
         b.set(0);
         assert_eq!(b[0], true);
     }
+
+    mod quickcheck {
+        use super::*;
+        use quickcheck::TestResult;
+
+        quickcheck! {
+            fn creatable(size: usize) -> bool {
+                Bits::new(size).size == size
+            }
+
+            fn set_unset(size: usize, i: usize) -> TestResult {
+                if i >= size {
+                    TestResult::discard()
+                } else {
+                    let mut b = Bits::new(size);
+                    b.set(i);
+                    TestResult::from_bool(b.get(i))
+                }
+            }
+        }
+    }
 }
