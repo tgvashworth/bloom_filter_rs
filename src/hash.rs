@@ -13,10 +13,11 @@ pub fn hash_rounds(v: &str, rounds: usize) -> Vec<String> {
     if rounds <= 0 {
         vec![]
     } else {
-        let hashed = hash(v);
-        let rest = hash_rounds(&hashed[..], rounds - 1);
-        let mut hashed_vec = vec![hashed];
-        hashed_vec.extend(rest);
+        let mut hashed_vec = vec![hash(v)];
+        for i in 1..rounds {
+            let hashed = hash(&hashed_vec[i-1][..]);
+            hashed_vec.push(hashed);
+        }
         hashed_vec
     }
 }
