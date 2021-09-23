@@ -16,7 +16,7 @@ pub fn hash_rounds(v: &str, rounds: usize) -> Vec<String> {
         let mut hashed_vec = Vec::with_capacity(rounds);
         hashed_vec.push(hash(v));
         for i in 1..rounds {
-            let hashed = hash(&hashed_vec[i-1][..]);
+            let hashed = hash(&hashed_vec[i - 1][..]);
             hashed_vec.push(hashed);
         }
         hashed_vec

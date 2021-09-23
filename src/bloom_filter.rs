@@ -1,6 +1,6 @@
-use std::ops::Rem;
 use bits::Bits;
 use hash;
+use std::ops::Rem;
 
 #[derive(Debug)]
 pub struct BloomFilter {
@@ -12,33 +12,30 @@ static ROUNDS: usize = 5;
 impl BloomFilter {
     pub fn new(size: usize) -> BloomFilter {
         BloomFilter {
-            bits: Bits::new(size)
+            bits: Bits::new(size),
         }
     }
 
     pub fn add(&mut self, v: &str) {
         let hashes = hash::hash_rounds(v, ROUNDS);
-        self.idxs(hashes).iter().for_each(|i| {
-            self.bits.set(*i)
-        })
+        self.idxs(hashes).iter().for_each(|i| self.bits.set(*i))
     }
 
     pub fn contains(&self, v: &str) -> bool {
         let hashes = hash::hash_rounds(v, ROUNDS);
-        self.idxs(hashes).iter().all(|i| {
-            self.bits.get(*i)
-        })
+        self.idxs(hashes).iter().all(|i| self.bits.get(*i))
     }
 
     fn idxs(&self, hashes: Vec<String>) -> Vec<usize> {
-        hashes.iter().map(|hash| {
-            match usize::from_str_radix(&hash[..8], 16) {
+        hashes
+            .iter()
+            .map(|hash| match usize::from_str_radix(&hash[..8], 16) {
                 Ok(v) => v.rem(self.bits.size()),
                 Err(error) => {
                     panic!("Failed to parse: {:?}", error)
-                },
-            }
-        }).collect()
+                }
+            })
+            .collect()
     }
 }
 

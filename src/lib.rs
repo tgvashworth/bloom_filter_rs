@@ -3,8 +3,8 @@
 extern crate quickcheck;
 
 mod bits;
-mod hash;
 pub mod bloom_filter;
+mod hash;
 
 #[cfg(test)]
 mod tests {
@@ -15,4 +15,3 @@ mod tests {
         bloom_filter::BloomFilter::new(128);
     }
 }
-
