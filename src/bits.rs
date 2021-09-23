@@ -228,6 +228,18 @@ mod tests {
                     TestResult::from_bool(!b[i])
                 }
             }
+
+            fn index_set_unset(size: usize, i: usize, j: usize) -> TestResult {
+                if i >= size || j >= size || i == j {
+                    TestResult::discard()
+                } else {
+                    let mut b = Bits::new(size);
+                    b.set(i);
+                    b.set(j);
+                    b.unset(i);
+                    TestResult::from_bool((!b[i]) && b[j])
+                }
+            }
         }
     }
 }
