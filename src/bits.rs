@@ -1,10 +1,10 @@
-use std::ops::Rem;
 use std::ops::Index;
+use std::ops::Rem;
 
 #[derive(Debug)]
 pub struct Bits {
     arr: Vec<u8>,
-    size: usize
+    size: usize,
 }
 
 static TRUE: bool = true;
@@ -15,7 +15,7 @@ impl Bits {
         let len = Bits::len_for_size(size);
         Bits {
             arr: vec![0; len],
-            size: size
+            size: size,
         }
     }
 
@@ -30,7 +30,7 @@ impl Bits {
         let rem = size.rem(8);
         match rem {
             0 => size / 8,
-            _ => size / 8 + 1
+            _ => size / 8 + 1,
         }
     }
 
